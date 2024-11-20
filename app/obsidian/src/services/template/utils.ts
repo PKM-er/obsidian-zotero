@@ -62,8 +62,11 @@ export const fileLink = (
     return embed.replace(/^!/, "");
   }
 };
-export const renderFilename = (name: string): string =>
-  filenamify(name, { replacement: "_" });
+export const renderFilename = (path: string): string =>
+  path
+    .split("/")
+    .map((name) => filenamify(name, { replacement: "_" }))
+    .join("/");
 
 export const isImageAnnot = (item: unknown): item is AnnotationInfo =>
   isAnnotationItem(item) && item.type === AnnotationType.image;
