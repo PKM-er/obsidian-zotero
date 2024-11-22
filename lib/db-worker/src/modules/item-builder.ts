@@ -55,7 +55,7 @@ export default class ItemBuilder {
       const fields = itemFields[itemID].reduce((fields, field) => {
         let { value } = field;
         if (field.fieldName === "date") {
-          value = multipartToSQL(value as string).split("-")[0];
+          value = multipartToSQL(value as string);
         }
         (fields[field.fieldName] ??= []).push(value);
         return fields;
