@@ -56,19 +56,17 @@ export class ProtocolHandler extends Service {
     if (query.items.length < 1) {
       new Notice("No items to open");
     } else if (query.items.length > 1) {
-      new Notice("Multiple items not yet supported");
+      new Notice("Multiple items in beta");
     }
-    const { libraryID, id } = query.items[0];
-    const [docItem] = await this.plugin.databaseAPI.getItems([[id, libraryID]]);
-    if (!docItem) {
-      new Notice("Item not found: " + id);
-      return;
-    }
-    const notePath = await this.plugin.noteFeatures.createNoteForDocItemFull(
-      docItem,
-    );
-    await this.plugin.app.workspace.openLinkText(notePath, "", false, {
-      active: true,
+    query.items.forEach(({ libraryID, id }) => {
+      this.plugin.databaseAPI.getItems([[id, libraryID]])
+        .then(([docItem]) => {
+          if (!docItem) {
+            new Notice("Item not found: " + id);
+          } else {
+            this.plugin.noteFeatures.createNoteForDocItemFull(docItem);
+          }
+        });
     });
   }
 }

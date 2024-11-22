@@ -226,8 +226,8 @@ class NoteFeatures extends Service {
 
     const info = noteIndex.getNotesFor(docItem);
     if (info.length) {
-      // only throw error if the note is linked to the same zotero item
-      throw new NoteExistsError(info, docItem.key);
+      // Just update this, why not?
+      return await this.updateNote(info, docItem.key);
     }
 
     const { vault, fileManager } = this.plugin.app,
